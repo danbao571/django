@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}我的网站|首页{% endblock %}
+{% block nav_home_active %}active{% endblock %}
+{% block content %}
+<div class="jumbotron">
+    <div class="container background-jpg" style="padding-top: 30px">
+        {% if not user.is_authenticated %}
+        <pre id="home">ConnectionAbortedError: [WinError 10053] 你的主机中的软件中止了一个已建立的连接。
+            <pre>...</pre>
+
+        <p><span id="login" class="btn btn-primary btn-lg" role="button">O泡时间到！</span></p></pre>
+        {% else %}
+        <div class="img" style="margin-top: 50px">
+            <img style="opacity: 0.1" src="/static/img/beijing1.png" alt="背景图" class="lyj img-responsive">
+            <img src="/static/img/timg.gif" alt="背景图" class="beijing img-responsive">
+        </div>
+        {% endif %}
+        <h1 style="text-align: center; color: white; margin: 80px 0">Welcome To My Site!</h1>
+        <div class="login col-lg-4 col-lg-offset-4">
+            <div class="login-form">
+                <input type="text" class="input-text" id="username" name="username" placeholder="手机号/电子邮箱">
+            </div>
+            <div class="login-form">
+                <input type="password" class="input-text" id="password" name="password" placeholder="密码">
+            </div>
+            <button id="submit_1" type="submit" class="btn btn-form-common form-control">
+                <span>登陆</span>
+            </button>
+            <span id="login_medal_tip" class="text-danger"></span>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+div.row {
+    margin: 0;
+}
+div.content {
+    position: relative;
+    padding: 0 0 10px 0;
+    border-bottom: 2px solid #708090;
+}
+#container {
+    padding-top: 60px;
+}
+div.content-blog > div{
+    padding: 10px;
+}
+div.author{
+    position: absolute;
+    right: 0;
+    top:4px;
+    text-align: center;
+}
+div.title {
+    font-size: 20px;
+}
+#footer{
+    text-align: center;
+    bottom: 10px;
+    width: 100%;
+}

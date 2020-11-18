@@ -1,0 +1,110 @@
+#loop video {
+    width: 88%;
+}
+#loop {
+    background: #2b2a2a;
+}
+.eye {
+    top:6px!important;
+}
+.search {
+    margin:0;
+    background-color:#2b2a2a;
+    color: #bbbbbb;
+    text-align: center;
+    position: absolute;
+    top: 50px;
+    width: 100%;
+    padding: 10px;
+    box-shadow:  0 4px 10px 4px rgba(0, 0, 0, 0.52);
+}
+.yuan-left {
+    border-bottom-left-radius: 30px!important;
+    border-top-left-radius: 30px!important;
+}
+.yuan-right {
+    border-bottom-right-radius: 30px!important;
+    border-top-right-radius: 30px!important;
+}
+#button {
+    margin-top: 2px;
+    width:20%;
+}
+.player {
+    padding: 0!important;
+    width:20%;
+    cursor: pointer;
+}
+.play {
+    display: block;
+}
+.pause {
+    display: none;
+}
+.audioPlayer {
+    opacity: 1;
+    position: relative;
+    height: 60px;
+    bottom: 0;
+    z-index: 2;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    padding-top: 18px;
+    padding-left: 20px;
+    background-color: #c94848;
+}
+.totalProgress {
+    cursor: pointer;
+    position: absolute;
+    top: 25px;
+    left: 27%;
+    width: 50%;
+    height: 8px;
+    background-color: #6fa0f1;
+    border-radius: 10px;
+}
+.currentProgress {
+    width:0;
+    height:100%;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-color: rgba(245, 245, 245, 0.71);
+}
+#download {
+    display: block;
+    position: absolute;
+    right:16%;
+    top:25px;
+    cursor: pointer;
+}
+.glyphicon-trash {
+    position: absolute!important;
+    right: 30px;
+    top:15px!important;
+    cursor: pointer;
+}
+.search-result {
+    opacity: 0.6;
+    position: relative;
+    top:104px;
+    height:700px;
+    overflow-x: hidden;
+    color: #ffffff;
+    font-size: 14px;
+    background-color: #4c4444;
+    margin-bottom: 104px;
+}
+.song-name {
+    position: absolute;
+    top: 5px;
+    left: 27%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 300px;
+}
+.tip {
+    position: absolute;
+    bottom: 5px;
+    left: 45%;
+}

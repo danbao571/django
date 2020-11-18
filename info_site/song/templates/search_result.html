@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'bootstrap-3.3.7/css/bootstrap.min.css' %}">
+    <script type="text/javascript" src="{% static 'jquery-1.12.4.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap-3.3.7/js/bootstrap.min.js' %}"></script>
+    <title>result</title>
+    <script>
+        $(function () {
+             $('.clic').click(function () {
+                 var a = parseInt(document.getElementById("con").style.height.replace('px', ''));
+                 var leng = {{ length }}*36.5;
+                 if(a<leng){
+                     $('#cont').animate({
+                        height: '+=365px',
+                 });
+                     $('#con').animate({
+                        height: '+=365px',
+                     });
+                 }else{
+                     $('.clic').text('没有更多了！');
+                 }
+            });
+        })
+    </script>
+</head>
+<body>
+    <div id="cont" style="height: 365px" class="{{ length }}">
+        <ul id="con" style="list-style: none;font-size: 15px;position: relative;height: 365px;display: inline-block;overflow: hidden" class="col-lg-4 col-xs-10 col-lg-offset-4 col-xs-offset-1">
+            {% for dict in result %}
+                <li style="padding:7px;border-bottom: 1px solid gray;">
+                    <span>{{ forloop.counter }}</span>
+                    <span style="position: absolute;left: 80px">{{ dict.name|truncatechars:20 }}</span>
+                    <span style="position: absolute;right: 30px">{{ dict.artist|truncatechars:20 }}</span>
+                </li>
+            {% empty %}
+                <h1>暂无信息</h1>
+            {% endfor %}
+        </ul>
+    </div>
+    <div style="position: absolute;left: 50%;cursor: pointer" class="clic">加载更多</div>
+
+
+
+
+</body>
+</html>

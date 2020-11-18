@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{# 标题 #}
+{% block title %}
+    mysite|music
+{% endblock %}
+
+{# 点击激活状态 #}
+{% block nav_music_active %}active{% endblock %}
+
+{# 页面内容 #}
+{% block content %}
+<div style="position: relative;">
+    <div id="loop" style="position: absolute; display: block;left: 0; right: 0; text-align: center">
+        <video autoplay="autoplay" loop="loop" playsinline="playsinline" style="overflow: hidden">
+            <source src="/media/篝火.mp4" type="video/mp4" style="overflow: hidden">
+        </video>
+    </div>
+    <div class="search">
+        <span class="glyphicon glyphicon-eye-open eye" style="font-size: 25px; cursor: pointer; z-index: 2; color: #fd050559"></span>
+        <span class="glyphicon glyphicon-eye-close eye" style="font-size: 25px; cursor: pointer; display: none;z-index: 2; color: #fd050559"></span>
+        <div class="col-lg-2 col-sm-4 col-sm-offset-4 col-lg-offset-5 col-xs-8 col-xs-offset-2">
+            <div class="input-group">
+                <input type="text" class="yuan-left form-control" name="ql" placeholder="搜索歌曲、歌手">
+                <span class="input-group-btn">
+                    <button class="yuan-right btn btn-default" type="submit">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="result-list col-lg-6 col-lg-offset-3 col-xs-12" style="position: relative; display: none">
+        <div class="search-result">
+            <table class="table table-responsive" style="border: 0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>name</th>
+                        <th>singer
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="result" id="tbody">
+                </tbody>
+            </table>
+        </div>
+        <!--音乐播放器-->
+        <div class="audioPlayer">
+            <div id="button">
+                <span class="player glyphicon glyphicon-step-backward"></span>
+                <span class="player song play glyphicon glyphicon-play"></span>
+                <span class="player song pause glyphicon glyphicon-pause" style="display: none"></span>
+                <span class="player glyphicon glyphicon-step-forward"></span>
+            </div>
+            <span class="song-name">better me --AGA</span>
+            <span class="tip"></span>
+            <audio id="audio" class="1" src="../../media/AGA-Better%20Me(Home%20demo%20：%20Butterscotch).flac" autoplay=""></audio>
+            <div class="totalProgress">
+                <div class="currentProgress"></div>
+                <span class="current_time">00:00</span>
+                /
+                <span class="total_time">00:00</span>
+            </div>
+            <span id="download" class="glyphicon glyphicon-save"></span>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function isMobile() {
+        var userAgentInfo = navigator.userAgent;
+        var mobileAgents = [ "Android", "iPhone", "SymbianOS", "Windows Phone", "iPad","iPod"];
+        var mobile_flag = false;
+        //根据userAgent判断是否是手机
+        for (var v = 0; v < mobileAgents.length; v++) {
+            if (userAgentInfo.indexOf(mobileAgents[v]) > 0) {
+                mobile_flag = true;
+                break;
+                }
+            }
+        var screen_width = window.screen.width;
+        var screen_height = window.screen.height;
+
+        //根据屏幕分辨率判断是否是手机
+        if(screen_width < 500 && screen_height < 800){
+             mobile_flag = true;
+         }
+        return mobile_flag;
+    }
+    $(function(){
+    var mobile_flag = isMobile(); // true为PC端，false为手机端
+
+    if(mobile_flag){
+        $('.search-result').css('height', '400px');
+        $('#loop').css({'top':'100px', 'padding-top':'40px', 'padding-bottom':'40px'});
+        $('#loop video').css('width', '100%');
+        }
+    });
+</script>
+{% endblock %}

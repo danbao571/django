@@ -1,0 +1,16 @@
+div.head {
+    padding-top: 60px;
+}
+div#blog {
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-top-width: 5px;
+    padding: 0 10px 10px 10px;
+    background-color: #f5f5f5;
+}
+.detail-title {
+    text-align: center;
+}
+nav.content {
+    margin-left: 20px!important;
+}

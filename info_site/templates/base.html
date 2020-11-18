@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'base.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'music.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'home.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'blog_detail.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'blog_list.css' %}"/>
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap-3.3.7/css/bootstrap.min.css' %}">
+    <script src="{% static 'ckeditor/ckeditor/plugins/prism/lib/prism/prism_patched.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'bootstrap-3.3.7/css/prism.css' %}">
+    <script type="text/javascript" src="{% static 'jquery-1.12.4.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap-3.3.7/js/bootstrap.min.js' %}"></script>
+    {% block header_extends %}{% endblock %}
+
+</head>
+<body style="background-color: #f5f5f5">
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+
+                <img style="height:50px; width: 116px; margin-left: -10px;" src="/static/img/logo.png" alt="logo">
+
+                <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div id="navbar-collapse" class="collapse navbar-collapse" >
+                <ul class="nav navbar-nav">
+                <li>
+                    <a class="{% block nav_home_active %}{% endblock %} base" href="{% url 'home' %}">
+                        <span class="glyphicon glyphicon-home"></span>
+                    </a>
+                </li>
+                <li>
+                    <a class="{% block nav_blog_active %}{% endblock %} base" href="{% url 'blog_list' %}">
+                        <span class="glyphicon glyphicon-book"></span>
+                    </a>
+                </li>
+                <li>
+                    <a class="{% block nav_music_active %}{% endblock %} base" href="{% url 'music' %}">
+                        <span class="glyphicon glyphicon-music"></span>
+                    </a>
+                </li>
+                </ul>
+
+                <ul id="user-info" class="nav navbar-nav navbar-right">
+                    {% if not user.is_authenticated %}
+                        <li>
+                            <a class="base" style="cursor: pointer" href="{% url 'login' %}">
+                                <span class="glyphicon glyphicon-sunglasses"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="base" href="{% url 'register' %}">注册</a>
+                        </li>
+                    {% else %}
+                        <li class="dropdown">
+                            <img src="{{ user.get_avatar_path }}" alt="头像" class="img-circle" style="height: 30px; width:30px;display: inline-block;line-height: 35px">
+                            <a id="nick-name" href="#" class="dropdown-toggle base" data-toggle="dropdown" role="button" style="display: inline-block; padding-left: 0; font-size: 18px">
+                                {% if user.nick_name %}
+                                    {{ user.nick_name }}
+                                {% else %}
+                                    {{ user.username }}
+                                {% endif %}
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="base" href="{% url 'user' %}">个人资料</a></li>
+                                <li><a class="base" href="">修改密码</a></li>
+                                {% if user.is_staff or user.is_superuser %}
+                                    <li><a class="base" href="{% url 'admin:index' %}">后台管理</a></li>
+                                {% endif %}
+                                <li><a class="base" href="{% url 'logout' %}">退出登录</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% block content %}{% endblock %}
+
+    {% block script_extends %}{% endblock %}
+    <!-- footer -->
+    <div class="footer">
+        <div class="website-info">
+            <a href="https://beian.miit.gov.cn">粤ICP备20027996号-1</a><p class="two">Copyright©2020 lyj571.com 版权所有</p>
+            <p class="two">意见反馈或联系我（1969236660@qq.com）</p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        //窗体改变大小事件
+        $(window).resize(function(){
+            var body_height = $(document.body).outerHeight(true); //正文高度
+            var bottom_height = $(".footer").outerHeight(true); //底部元素高度
+            var window_height = $(window).height(); //浏览器页面高度
+
+            //判断并调整底部元素的样式
+            if($(".footer").hasClass('page-bottom')){
+                //若包含有page-bottom类，就应用了position设置
+                //当position为absolute时，body高度不包含这个元素
+                //所以页面高度需要判断body和footer之和若小于浏览器窗口
+                //则移除样式，让footer自然跟随在正文后面
+                if(body_height + bottom_height >= window_height){
+                    $(".footer").removeClass('page-bottom');
+                }
+            }else{
+                //若没有page-bottom类，body高度包含footer
+                //判断body高度小于浏览器时，则悬浮于底部
+                if(body_height < window_height){
+                    $(".footer").addClass('page-bottom');
+                }
+            }
+        });
+        //页面加载时，模拟触发一下resize事件
+        $(window).trigger('resize');
+    </script>
+</body>
+<script src="../static/audioPlayer.js"></script>
+<!--登陆-->
+<script type="text/javascript">
+    $('#submit_1').click(function () {
+        $.ajax({
+            url: '{% url "login" %}',
+            type: 'post',
+            data: {
+                'user': $("#username").val(),
+                'password': $('#password').val()
+            },
+            success: function (data) {
+                if(data.status === "SUCCESS"){
+                    window.location.reload();
+                }else{
+                    $('#login_medal_tip').text('用户名或者密码不正确！！ 请再试一次!');
+                }
+            }
+        })
+    })
+    $('#login').click(function () {
+        $('#home').hide();
+        $('.login').show();
+    })
+</script>
+</html>
