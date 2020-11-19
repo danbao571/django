@@ -96,35 +96,34 @@ $('.yuan-right').click(function () {
             'word': $('.yuan-left').val(),
         },
         success: function (data) {
-            var nick_name = $('#nick-name').text();
-            if(nick_name===''){
-                alert('请先登陆');
-            }else{
-                if(data.status === "SUCCESS"){
-                    $(".result").empty();
-                    if($('.result-list').hide()){
-                        $('.glyphicon-eye-open').click();
-                    }
-                    let total = data.info.length;
-                    for (var i=0;i<total;i++) {
-                        let id = data.info[i].rid;
-                        let time = data.info[i].songTimeMinutes;
-                        let name = data.info[i].name;
-                        let artist = data.info[i].artist;
-                        $('.result').append('<tr class="rid" style="cursor: pointer;"><th class="num"></th><td class="name"></td><td class="artist" style="max-width: 500px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;"></td></tr>');
-                        $('.name').last().attr({'id': id, 'time': time}).html(name);
-                        $('.num').last().html(i+1);
-                        $('.artist').last().html(artist + '<button onclick="clean(this)" type="button" class="close" aria-label="Close" style="color: #e8e6e5; opacity: 1; font-size: 15px; padding-right: 18px" ><span aria-hidden="true">&times;</span></button>');
-                        document.getElementById(id).addEventListener("click", function(){
-                            $('.song-name').text(name + ' -- ' + artist);
-                            totalTime.text(time);
-                            get_url(id);
-                        });
-                    }
+            // var nick_name = $('#nick-name').text();
+            // if(nick_name===''){
+            //     alert('请先登陆');
+            // }else{
+            if(data.status === "SUCCESS"){
+                $(".result").empty();
+                if($('.result-list').hide()){
+                    $('.glyphicon-eye-open').click();
+                }
+                let total = data.info.length;
+                for (var i=0;i<total;i++) {
+                    let id = data.info[i].rid;
+                    let time = data.info[i].songTimeMinutes;
+                    let name = data.info[i].name;
+                    let artist = data.info[i].artist;
+                    $('.result').append('<tr class="rid" style="cursor: pointer;"><th class="num"></th><td class="name"></td><td class="artist" style="max-width: 500px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;"></td></tr>');
+                    $('.name').last().attr({'id': id, 'time': time}).html(name);
+                    $('.num').last().html(i + 1);
+                    $('.artist').last().html(artist + '<button onclick="clean(this)" type="button" class="close" aria-label="Close" style="color: #e8e6e5; opacity: 1; font-size: 15px; padding-right: 18px" ><span aria-hidden="true">&times;</span></button>');
+                    document.getElementById(id).addEventListener("click", function () {
+                        $('.song-name').text(name + ' -- ' + artist);
+                        totalTime.text(time);
+                        get_url(id);
+                    });
+                }
                 }else {
                     $('.yuan-left').attr('placeholder','搜索内容不能为空！！');
                 }
-            }
 
         }
     })

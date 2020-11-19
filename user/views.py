@@ -10,7 +10,7 @@ from django.http import JsonResponse
 @csrf_exempt
 def register(request):
     if request.method == 'GET':
-        return render(request, 'home.html')
+        return render(request, 'user/register.html')
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
@@ -28,17 +28,20 @@ def register(request):
 
 @csrf_exempt
 def login(request):
-    name = request.POST.get('user')
-    password = request.POST.get('password')
-    user = auth.authenticate(username=name, password=password)
-    data = {}
-    if user:
-        auth.login(request, user)
-        data['username'] = user.username
-        data['status'] = "SUCCESS"
-    else:
-        data['status'] = 'ERROR'
-    return JsonResponse(data)
+    if request.method == 'GET':
+        return render(request, 'user/login.html')
+    if request.method == 'POST':
+        name = request.POST.get('user')
+        password = request.POST.get('password')
+        user = auth.authenticate(username=name, password=password)
+        data = {}
+        if user:
+            auth.login(request, user)
+            data['username'] = user.username
+            data['status'] = "SUCCESS"
+        else:
+            data['status'] = 'ERROR'
+        return JsonResponse(data)
 
 
 def logout(request):
@@ -47,4 +50,4 @@ def logout(request):
 
 
 def user(request):
-    return render(request, 'user_info.html', locals())
+    return render(request, 'user/user_info.html', locals())

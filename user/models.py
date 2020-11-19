@@ -13,7 +13,7 @@ class UserProfile(AbstractUser):
     phone = models.CharField('手机号', max_length=11, blank=True, null=True)
     nick_name = models.CharField('昵称', max_length=50, default='')
     gender = models.CharField('性别', max_length=10, choices=gender_choices, default='female')
-    avatar = models.ImageField(upload_to='avatar', default='avatar/j.jpg', verbose_name='头像')
+    avatar = models.ImageField(upload_to='avatar', default='avatar/avatar.jpg', verbose_name='头像')
 
     def __str__(self):
         return self.username

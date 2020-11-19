@@ -5,7 +5,7 @@ import json
 
 
 def music(request):
-    return render(request, 'music.html', locals())
+    return render(request, 'song/music.html', locals())
 
 
 def search_song(request):

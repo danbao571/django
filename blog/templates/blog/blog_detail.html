@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{# 标题 #}
+{% block title %}
+    mysite|blog
+{% endblock %}
+
+{# 点击激活状态 #}
+{% block nav_blog_active %}active{% endblock %}
+
+{# 页面内容 #}
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="head col-lg-8 col-lg-offset-2 col-xs-12 col-md-10 col-md-offset-1">
+            <div id="blog">
+                <div class="detail-title">
+                    <h2>{{ blog.title }}</h2>
+                    <h4>--{{ blog.author }}</h4>
+                </div>
+                <nav class="content">{{ blog.content|safe }}</nav>
+            </div>
+        </div>
+        <div style="clear: both"></div>
+    {% else %}
+        <div class="col-xs-10 col-xs-offset-1 col-lg-2 col-lg-offset-5 col-sm-6 col-sm-offset-3" style="padding: 0; margin-top: 150px">
+            <div class="login" style="display: block;margin-top: 100px">
+                <div class="login-form">
+                    <input type="text" class="input-text" id="username" name="username" placeholder="手机号/电子邮箱">
+                </div>
+                <div class="login-form">
+                    <input type="password" class="input-text" id="password" name="password" placeholder="密码">
+                </div>
+                <button id="submit_1" type="submit" class="btn btn-form-common form-control">
+                    <span>登陆</span>
+                </button>
+                <span id="login_medal_tip" class="text-danger"></span>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

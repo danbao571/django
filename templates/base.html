@@ -36,37 +36,55 @@
             </div>
             <div id="navbar-collapse" class="collapse navbar-collapse" >
                 <ul class="nav navbar-nav">
-                <li>
-                    <a class="{% block nav_home_active %}{% endblock %} base" href="{% url 'home' %}">
-                        <span class="glyphicon glyphicon-home"></span>
-                    </a>
-                </li>
-                <li>
-                    <a class="{% block nav_blog_active %}{% endblock %} base" href="{% url 'blog_list' %}">
-                        <span class="glyphicon glyphicon-book"></span>
-                    </a>
-                </li>
-                <li>
-                    <a class="{% block nav_music_active %}{% endblock %} base" href="{% url 'music' %}">
-                        <span class="glyphicon glyphicon-music"></span>
-                    </a>
-                </li>
+                    <li>
+                        <a class="{% block nav_home_active %}{% endblock %} base" href="{% url 'home' %}">
+                            <span class="glyphicon glyphicon-home"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="{% block nav_blog_active %}{% endblock %} base" href="{% url 'blog_list' %}">
+                            <span class="glyphicon glyphicon-book"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="{% block nav_music_active %}{% endblock %} base" href="{% url 'music' %}">
+                            <span class="glyphicon glyphicon-music"></span>
+                        </a>
+                    </li>
                 </ul>
 
                 <ul id="user-info" class="nav navbar-nav navbar-right">
                     {% if not user.is_authenticated %}
-                        <li>
-                            <a class="base" style="cursor: pointer" href="{% url 'login' %}">
-                                <span class="glyphicon glyphicon-sunglasses"></span>
+                        <li class="dropdown" style="margin: auto">
+                            <a class="base dropdown-toggle" style="cursor: pointer" data-toggle="dropdown" role="button">
+                                <span class="glyphicon glyphicon-user"></span>
                             </a>
-                        </li>
-                        <li>
-                            <a class="base" href="{% url 'register' %}">注册</a>
+                            <ul class="dropdown-menu img-rounded" style="width:230px; height:150px;margin: auto;border-radius: 15px">
+                                <li>
+                                    <div class="login-form" style="width:85%; margin-left:15px;margin-top: 7px">
+                                        <input type="text" class="input-text" id="username" name="username" placeholder="手机号/电子邮箱" style="border-radius: 5px">
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="login-form" style="width:85%; margin-left:15px;">
+                                        <input type="password" class="input-text" id="password" name="password" placeholder="密码" style="border-radius: 5px">
+                                    </div>
+                                </li>
+                                <li>
+                                    <button id="log" class="btn" style="margin-left: 20px;margin-top: 7px">
+                                        <span>登陆</span>
+                                    </button>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button class="btn" style="margin-right: 15px;margin-top: 7px">
+                                        <span>注册</span>
+                                    </button>
+                                </li>
+                            </ul>
                         </li>
                     {% else %}
                         <li class="dropdown">
                             <img src="{{ user.get_avatar_path }}" alt="头像" class="img-circle" style="height: 30px; width:30px;display: inline-block;line-height: 35px">
-                            <a id="nick-name" href="#" class="dropdown-toggle base" data-toggle="dropdown" role="button" style="display: inline-block; padding-left: 0; font-size: 18px">
+                            <a id="nick-name" class="dropdown-toggle base" data-toggle="dropdown" role="button" style="display: inline-block; padding-left: 0; font-size: 18px">
                                 {% if user.nick_name %}
                                     {{ user.nick_name }}
                                 {% else %}
@@ -93,7 +111,8 @@
     <!-- footer -->
     <div class="footer">
         <div class="website-info">
-            <a href="https://beian.miit.gov.cn">粤ICP备20027996号-1</a><p class="two">Copyright©2020 lyj571.com 版权所有</p>
+            <a href="https://beian.miit.gov.cn">粤ICP备20027996号-1</a>
+            <p class="two">Copyright©2020 lyj571.com 版权所有</p>
             <p class="two">意见反馈或联系我（1969236660@qq.com）</p>
         </div>
     </div>
@@ -125,7 +144,7 @@
         $(window).trigger('resize');
     </script>
 </body>
-<script src="../static/audioPlayer.js"></script>
+<script src="{% static '/audioPlayer.js' %}"></script>
 <!--登陆-->
 <script type="text/javascript">
     $('#submit_1').click(function () {
@@ -141,6 +160,9 @@
                     window.location.reload();
                 }else{
                     $('#login_medal_tip').text('用户名或者密码不正确！！ 请再试一次!');
+                    window.setTimeout(function () {
+                        $('#login_medal_tip').text('');
+                    },1200);
                 }
             }
         })
@@ -148,6 +170,9 @@
     $('#login').click(function () {
         $('#home').hide();
         $('.login').show();
+    })
+    $('#log').click(function () {
+        $('#submit_1').click();
     })
 </script>
 </html>

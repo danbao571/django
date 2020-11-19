@@ -5,7 +5,7 @@ from blog.models import Blog, BlogType
 
 def blog_detail(request, blog_pk):
     blog = get_object_or_404(Blog, pk=blog_pk)
-    return render(request, 'blog_detail.html', locals())
+    return render(request, 'blog/blog_detail.html', locals())
 
 
 def blog_list(request):
@@ -23,7 +23,7 @@ def blog_list(request):
     # 返回的页码数
     num_list = [i for i in range(max(1, cut_page-2), cut_page)] + \
                [i for i in range(cut_page, min(cut_page+2, paginator.num_pages)+1)]
-    return render(request, 'blog_list.html', locals())
+    return render(request, 'blog/blog_list.html', locals())
 
 
 def get_blog_type(request, blog_type_pk):
@@ -40,4 +40,4 @@ def get_blog_type(request, blog_type_pk):
     # 返回的页码数
     num_list = [i for i in range(max(1, cut_page - 2), cut_page)] + \
                [i for i in range(cut_page, min(cut_page + 2, paginator.num_pages) + 1)]
-    return render(request, 'blog_type.html', locals())
+    return render(request, 'blog/blog_type.html', locals())
