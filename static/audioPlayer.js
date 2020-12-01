@@ -7,6 +7,8 @@ var sb = 0;
 
 window.onload = function(){
     totalTime.text(formatTime(audio.duration));
+    $('.play').css({'display':'none'});
+    $('.pause').css({'display':'inline-block'});
 }
 // 播放暂停切换
 function play_song() {

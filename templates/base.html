@@ -119,10 +119,11 @@
     <script type="text/javascript">
         //窗体改变大小事件
         $(window).resize(function(){
-            var body_height = $(document.body).outerHeight(true); //正文高度
+            var body_height = $(document.body).outerHeight(true) +82; //正文高度
             var bottom_height = $(".footer").outerHeight(true); //底部元素高度
             var window_height = $(window).height(); //浏览器页面高度
-
+            console.log(body_height);
+            console.log(window_height);
             //判断并调整底部元素的样式
             if($(".footer").hasClass('page-bottom')){
                 //若包含有page-bottom类，就应用了position设置

@@ -1,6 +1,8 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import JsonResponse
 from .ku_api import Search
+from django.conf import settings
 import json
 
 
@@ -31,4 +33,16 @@ def get_song_url(request):
     song_url = json.loads(song_info)
     data = {}
     data['info'] = song_url
+    return JsonResponse(data)
+
+
+def remove_bg(request):
+    file = request.FILES.get('photo', None)
+    search = Search()
+    result = search.remove(file)
+    path = settings.SHOW_ROOT + '\\remove\\%s' % file.name
+    with open(path, "wb") as f:
+        f.write(result)
+    data = {}
+    data['img'] = 'http://127.0.0.1:8000/static/remove/%s' % file.name
     return JsonResponse(data)
