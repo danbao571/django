@@ -16,6 +16,11 @@
             <img src="/static/img/timg.gif" alt="背景图" class="beijing img-responsive">
         </div>
         {% endif %}
+        <form id="infoLogoForm">
+            <input type="file" name="photo" id="photo" value="" placeholder="免冠照片">
+            <input type="button" onclick="postData();" value="去除背景" name="" style="width:100px;height:30px;">
+        </form>
+        <img id="show" src="" alt="show">
         <h1 style="text-align: center; color: white; margin: 80px 0">Welcome To My Site!</h1>
         <div class="login col-lg-4 col-lg-offset-4">
             <div class="login-form">
@@ -31,4 +36,24 @@
         </div>
     </div>
 </div>
+    <script type="text/javascript">
+        function postData(){
+            var form = document.getElementById("infoLogoForm");
+            var formData = new FormData(form);
+            var pu = formData.get('photo');
+            console.log(pu);
+            $.ajax({
+                url:'{% url 'remove_bg' %}',
+                type:'post',
+                data: formData,
+                dataType: 'json',
+                processData: false, // 告诉jQuery不要去处理发送的数据
+                contentType: false, // 告诉jQuery不要去设置Content-Type请求头
+                success:function(data){
+                    $('#show').attr('src', data.img);
+
+                }
+            })
+        }
+    </script>
 {% endblock %}

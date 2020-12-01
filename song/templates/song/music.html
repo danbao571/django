@@ -3,7 +3,7 @@
 
 {# 标题 #}
 {% block title %}
-    mysite|music
+    音乐
 {% endblock %}
 
 {# 点击激活状态 #}
@@ -14,7 +14,7 @@
 <div style="position: relative;">
     <div id="loop" style="position: absolute; display: block;left: 0; right: 0; text-align: center">
         <video loop="loop" playsinline="playsinline" autoplay="autoplay" style="overflow: hidden">
-            <source src="/media/篝火.mp4" type="video/mp4" style="overflow: hidden">
+            <source src="../../../media/篝火.mp4" type="video/mp4" style="overflow: hidden">
         </video>
     </div>
     <div class="search">
@@ -94,7 +94,7 @@
         if(mobile_flag){
             $('.search-result').css('height', '400px');
             $('#loop').css({'top':'100px', 'padding-top':'40px', 'padding-bottom':'40px'});
-            $('#loop video').attr('poster', '/media/hills.png').attr('src', '/media/hills.mp4').css('width', '100%');
+            $('#loop video').attr('src', '/media/hills.mp4').css('width', '100%');
             $('.footer').remove();
             $('body').css('background-color', '#292935')
             }

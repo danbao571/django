@@ -33,3 +33,12 @@ class Search(object):
         url = 'https://player.kuwo.cn/webmusic/st/getNewMuiseByRid?rid={}'.format(rid)
         response = requests.get(url).content.decode('utf-8')
         return response
+
+    def remove(self, file):
+        response = requests.post(
+            'https://api.remove.bg/v1.0/removebg',
+            files={'image_file': file},
+            data={'size': 'auto'},
+            headers={'X-Api-Key': 'RLgXtt1EywEE28Xusa7BWUQ3'},
+        )
+        return response.content
