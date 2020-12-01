@@ -26,7 +26,7 @@ SECRET_KEY = '0^9mqu8uw=n37d8-re14d#&l*uc074iq413*4+frg-++l^@l!)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -83,36 +83,36 @@ WSGI_APPLICATION = 'info_site.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+#DATABASES = {
+#   'default': {
+#     'ENGINE': 'djongo',
+#      'ENFORCE_SCHEMA': True,
+#      'NAME': 'lyj',
+#      'CLIENT': {
+#         'host': '192.168.188.14',
+#         'port': 27019,
+#         'username': 'root',
+#         'password': 'data123123',
+#         'authSource': 'admin',
+#         'authMechanism': 'SCRAM-SHA-1'
+#      }
+#  }
+#}
 DATABASES = {
-   'default': {
-      'ENGINE': 'djongo',
-      'ENFORCE_SCHEMA': True,
-      'NAME': 'lyj',
-      'CLIENT': {
-         'host': '192.168.188.14',
-         'port': 27019,
-         'username': 'root',
-         'password': 'data123123',
-         'authSource': 'admin',
-         'authMechanism': 'SCRAM-SHA-1'
-      }
-   }
-}
-# DATABASES = {
-#    'default': {
-#       'ENGINE': 'djongo',
-#       'ENFORCE_SCHEMA': True,
-#       'NAME': 'lyj_site',
-#       'CLIENT': {
-#          'host': '47.107.50.252',
-#          'port': 27017,
-#          'username': 'root',
-#          'password': 'mima',
-#          'authSource': 'admin',
-#          'authMechanism': 'SCRAM-SHA-1'
-#       }
-#    }
-# }
+    'default': {
+       'ENGINE': 'djongo',
+       'ENFORCE_SCHEMA': True,
+       'NAME': 'lyj_site',
+       'CLIENT': {
+          'host': '47.107.50.252',
+          'port': 27017,
+          'username': 'root',
+          'password': 'mima',
+          'authSource': 'admin',
+          'authMechanism': 'SCRAM-SHA-1'
+       }
+    }
+ }
 
 # from mongoengine import connect
 # connect(host='mongodb://root:data123123@192.168.188.14:27019/lyj?authSource=admin&authMechanism=SCRAM-SHA-1')
