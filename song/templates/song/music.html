@@ -11,9 +11,10 @@
 
 {# 页面内容 #}
 {% block content %}
-<div style="position: relative;">
+<div id="container">
+    <div style="position: relative;">
     <div id="loop" style="position: absolute; display: block;left: 0; right: 0; text-align: center">
-        <video loop="loop" playsinline="playsinline" autoplay="autoplay" style="overflow: hidden">
+        <video loop="loop" playsinline="playsinline" autoplay="autoplay" muted style="overflow: hidden">
             <source src="../../../media/篝火.mp4" type="video/mp4" style="overflow: hidden">
         </video>
     </div>
@@ -29,42 +30,6 @@
                     </button>
                 </span>
             </div>
-        </div>
-    </div>
-    <div class="result-list col-lg-6 col-lg-offset-3 col-xs-12" style="position: relative; display: none">
-        <div class="search-result">
-            <table class="table table-responsive" style="border: 0">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>name</th>
-                        <th>singer
-                            <span class="glyphicon glyphicon-trash"></span>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="result" id="tbody">
-                </tbody>
-            </table>
-        </div>
-        <!--音乐播放器-->
-        <div class="audioPlayer">
-            <div id="button">
-                <span class="player glyphicon glyphicon-step-backward"></span>
-                <span class="player song play glyphicon glyphicon-play"></span>
-                <span class="player song pause glyphicon glyphicon-pause" style="display: none"></span>
-                <span class="player glyphicon glyphicon-step-forward"></span>
-            </div>
-            <span class="song-name">better me --AGA</span>
-            <span class="tip"></span>
-            <audio id="audio" class="1" src="../../../media/AGA-Bette%20Me.mp3" autoplay="autoplay"></audio>
-            <div class="totalProgress">
-                <div class="currentProgress"></div>
-                <span class="current_time">00:00</span>
-                /
-                <span class="total_time">00:00</span>
-            </div>
-            <span id="download" class="glyphicon glyphicon-save"></span>
         </div>
     </div>
 </div>
@@ -97,7 +62,60 @@
             $('#loop video').attr('src', '/media/hills.mp4').css('width', '100%');
             $('.footer').remove();
             $('body').css('background-color', '#292935')
+        }
+    })
+    $('.yuan-right').click(function () {
+        $.ajax({
+            url: '{% url "song:search_song" %}',
+            type: 'get',
+            data: {
+                'word': $('.yuan-left').val(),
+            },
+            success: function (data) {
+                if(data.status === "SUCCESS"){
+                    $(".result").empty();
+                    if($('.result-list').hide()){
+                        $('.glyphicon-eye-open').click();
+                    }
+                    let total = data.info.length;
+                    for (var i=0;i<total;i++) {
+                        let id = data.info[i].rid;
+                        let time = data.info[i].songTimeMinutes;
+                        let name = data.info[i].name;
+                        let artist = data.info[i].artist;
+                        $('.result').append('<tr class="rid" style="cursor: pointer;"><th class="num"></th><td class="name"></td><td class="artist" style="max-width: 500px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;"></td></tr>');
+                        $('.name').last().attr({'id': id, 'time': time}).html(name);
+                        $('.num').last().html(i + 1);
+                        $('.artist').last().html(artist + '<button onclick="clean(this)" type="button" class="close" aria-label="Close" style="color: #e8e6e5; opacity: 1; font-size: 15px; padding-right: 18px" ><span aria-hidden="true">&times;</span></button>');
+                        document.getElementById(id).addEventListener("click", function () {
+                            $('.song-name').text(name + ' -- ' + artist);
+                            totalTime.text(time);
+                            get_url(id);
+                        });
+                    }
+                    }else {
+                        $('.yuan-left').attr('placeholder','搜索内容不能为空！！');
+                    }
+
             }
+        })
+    })
+    // 清空搜索列表
+    $('.glyphicon-trash').click(function () {
+        $(".result").empty();
+    })
+    // 收起音乐列表
+    $('.glyphicon-eye-close').click(function () {
+        $('.result-list').hide();
+        $(this).hide();
+        $('.glyphicon-eye-open').show();
+    })
+    // 展开音乐列表
+    $('.glyphicon-eye-open').click(function () {
+        $('.result-list').show();
+        $(this).hide();
+        $('.glyphicon-eye-close').show();
     })
 </script>
+</div>
 {% endblock %}

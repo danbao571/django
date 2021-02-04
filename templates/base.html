@@ -3,6 +3,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Access-Control-Allow-Origin" content="kuwo.cn">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock %}</title>
@@ -12,14 +13,15 @@
     <link type="text/css" rel="stylesheet" href="{% static 'home.css' %}"/>
     <link type="text/css" rel="stylesheet" href="{% static 'blog_detail.css' %}"/>
     <link type="text/css" rel="stylesheet" href="{% static 'blog_list.css' %}"/>
-    <link rel="stylesheet" href="{% static 'base.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap-3.3.7/css/bootstrap.min.css' %}">
-    <script src="{% static 'prism/lib/prism/prism_patched.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'prism/lib/prism/prism_patched.min.js' %}"></script>
     <link rel="stylesheet" href="{% static 'bootstrap-3.3.7/css/prism.css' %}">
     <script type="text/javascript" src="{% static 'jquery-1.12.4.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jquery.ajax-cross-origin.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'download.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jquery.pjax.js' %}"></script>
     <script type="text/javascript" src="{% static 'bootstrap-3.3.7/js/bootstrap.min.js' %}"></script>
     {% block header_extends %}{% endblock %}
-
 </head>
 <body style="background-color: #f5f5f5">
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -37,21 +39,22 @@
             <div id="navbar-collapse" class="collapse navbar-collapse" >
                 <ul class="nav navbar-nav">
                     <li>
-                        <a class="{% block nav_home_active %}{% endblock %} base" href="{% url 'home' %}">
+                        <a class="{% block nav_home_active %}{% endblock %} base home">
                             <span class="glyphicon glyphicon-home"></span>
                         </a>
                     </li>
                     <li>
-                        <a class="{% block nav_blog_active %}{% endblock %} base" href="{% url 'blog_list' %}">
+                        <a class="{% block nav_blog_active %}{% endblock %} base blog">
                             <span class="glyphicon glyphicon-book"></span>
                         </a>
                     </li>
                     <li>
-                        <a class="{% block nav_music_active %}{% endblock %} base" href="{% url 'music' %}">
+                        <a class="{% block nav_music_active %}{% endblock %} base music">
                             <span class="glyphicon glyphicon-music"></span>
                         </a>
                     </li>
                 </ul>
+
 
                 <ul id="user-info" class="nav navbar-nav navbar-right">
                     {% if not user.is_authenticated %}
@@ -105,25 +108,64 @@
             </div>
         </div>
     </div>
-    {% block content %}{% endblock %}
+
+    <div id="contents">
+    {% block content %}
+    {% endblock %}
+    </div>
+
 
     {% block script_extends %}{% endblock %}
     <!-- footer -->
-    <div class="footer">
-        <div class="website-info">
-            <a href="https://beian.miit.gov.cn">粤ICP备20027996号-1</a>
-            <p class="two">Copyright©2020 lyj571.com 版权所有</p>
-            <p class="two">意见反馈或联系我（1969236660@qq.com）</p>
+     <div class="audioPlayer">
+            <div id="button">
+                <span class="player glyphicon glyphicon-step-backward"></span>
+                <span class="player song play glyphicon glyphicon-play"></span>
+                <span class="player song pause glyphicon glyphicon-pause" style="display: none"></span>
+                <span class="player glyphicon glyphicon-step-forward"></span>
+            </div>
+            <span class="song-name">better me --AGA</span>
+            <span class="tip"></span>
+            <div class="totalProgress">
+                <div class="currentProgress"></div>
+                <span class="current_time">00:00</span>
+                /
+                <span class="total_time">00:00</span>
+            </div>
+            <span id="download" class="glyphicon glyphicon-save"></span>
         </div>
+    <audio id="audio" class="1" src="../media/AGA-Bette%20Me.mp3" autoplay="autoplay"></audio>
+    <div class="result-list col-lg-6 col-lg-offset-3 col-xs-12" style="position: relative;">
+        <div class="search-result">
+            <table class="table table-responsive" style="border: 0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>name</th>
+                        <th>singer
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="result" id="tbody">
+                </tbody>
+            </table>
+        </div>
+        <!--音乐播放器-->
     </div>
+<!--    <div class="footer">-->
+<!--        <div class="website-info">-->
+<!--            <a href="https://beian.miit.gov.cn">粤ICP备20027996号-1</a>-->
+<!--            <p class="two">Copyright©2020 lyj571.com 版权所有</p>-->
+<!--            <p class="two">意见反馈或联系我（1969236660@qq.com）</p>-->
+<!--        </div>-->
+<!--    </div>-->
     <script type="text/javascript">
         //窗体改变大小事件
         $(window).resize(function(){
             var body_height = $(document.body).outerHeight(true) +82; //正文高度
             var bottom_height = $(".footer").outerHeight(true); //底部元素高度
             var window_height = $(window).height(); //浏览器页面高度
-            console.log(body_height);
-            console.log(window_height);
             //判断并调整底部元素的样式
             if($(".footer").hasClass('page-bottom')){
                 //若包含有page-bottom类，就应用了position设置
@@ -146,9 +188,102 @@
     </script>
 </body>
 <script src="{% static '/audioPlayer.js' %}"></script>
+<script>
+    $('#download').click(function () {
+        var song = $('#audio').attr('src');
+        var name = $('span.song-name').text();
+        const a = document.createElement('a'); // 创建a标签
+        a.setAttribute('download', name);// download属性
+        a.setAttribute('href', song);// href链接
+        a.setAttribute('target', '_brank');// href链接
+        a.click();// 自执行点击事件
+        // downloadfile(song, name);
+        // test(song);
+        // downloadUrlFile(url, name);
+        // downloadRes(song, name);
+
+    });
+   // function downloadUrlFile(url, name) {
+   //    var xhr = new XMLHttpRequest();
+   //    xhr.open('GET', url, true);
+   //    xhr.responseType = 'blob';
+   //    // xhr.setRequestHeader('Origin', 'kuwo.cn');
+   //    xhr.onload = function() {
+   //          // var url = window.URL.createObjectURL(xhr.response);
+   //          // var a = document.createElement('a');
+   //          // a.href = url
+   //          // a.download = name;
+   //          // a.click();
+   //          var urlObject = window.URL || window.webkitURL || window;
+   //          var export_blob = new Blob([xhr.response]);
+   //          var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a')
+   //          save_link.href = urlObject.createObjectURL(export_blob);
+   //          save_link.download = name;
+   //          save_link.click();
+   //    };
+   //    xhr.send();
+   //  }
+   //  const downloadRes = async (url, name) => {
+   //      let response = await fetch(url)
+   //      // 内容转变成blob地址
+   //      let blob = await response.blob()
+   //      // 创建隐藏的可下载链接
+   //      let objectUrl = window.URL.createObjectURL(blob);
+   //      let a = document.createElement('a');
+   //      //地址
+   //      a.href = objectUrl;
+   //      //修改文件名
+   //      a.download = name;
+   //      a.style.display = 'none';
+   //      // 触发点击
+   //      document.body.appendChild(a)
+   //      a.click()
+   //      //移除
+   //      setTimeout(() => document.body.removeChild(a), 1000)
+   //  }
+   //  function downloadfile(url, strFileName, strMimeType) {
+   //    var xmlHttp = null;
+   //    if (window.ActiveXObject) {
+   //      // IE6, IE5 浏览器执行代码
+   //      xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+   //    } else if (window.XMLHttpRequest) {
+   //      // IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+   //      xmlHttp = new XMLHttpRequest();
+   //    }
+   //    //2.如果实例化成功，就调用open（）方法：
+   //    if (xmlHttp != null) {
+   //      xmlHttp.open("get", url, true);
+   //      xmlHttp.responseType = 'blob';//关键
+   //      xmlHttp.send();
+   //      xmlHttp.onreadystatechange = doResult; //设置回调函数
+   //    }
+   //    function doResult() {
+   //      if (xmlHttp.readyState == 4) { //4表示执行完成
+   //        if (xmlHttp.status == 200) { //200表示执行成功
+   //          download(xmlHttp.response, strFileName, strMimeType);
+   //        }
+   //      }
+   //    }
+   //  }
+   //  function test(src) {
+   //      let url = src;　　　　　　　　　
+   //      var x = new XMLHttpRequest();
+   //      x.open("GET", url, true);
+   //      x.setRequestHeader("Origin","*");
+   //      x.responseType = 'blob';
+   //      x.onload=function(e) {
+   //          var url = window.URL.createObjectURL(x.response)
+   //          var a = document.createElement('a');
+   //          a.href = url
+   //          a.download = 'xiazai'; //下载后的文件名
+   //         a.click()
+   //      }
+   //      x.send();
+   //  }
+</script>
 <!--登陆-->
 <script type="text/javascript">
-    $('#submit_1').click(function () {
+    $('#log').click(function () {
         $.ajax({
             url: '{% url "login" %}',
             type: 'post',
@@ -167,13 +302,81 @@
                 }
             }
         })
-    })
+    });
     $('#login').click(function () {
         $('#home').hide();
         $('.login').show();
-    })
-    $('#log').click(function () {
-        $('#submit_1').click();
-    })
+    });
+    $('#submit_1').click(function () {
+        $('#log').click();
+    });
+    $(document).on('click', 'a.blog', function () {
+        is_music(this);
+        close_btn();
+        $('.blog').addClass('active');
+        $('.home').removeClass('active');
+        $('.music').removeClass('active');
+        $.pjax({
+            url: '{% url "blog:blog_list" %}',
+            container: '#contents',
+            fragment: '#container',
+        })
+    });
+    $(document).on('click', 'a.home', function () {
+        is_music(this);
+        close_btn();
+        $('.home').addClass('active');
+        $('.blog').removeClass('active');
+        $('.music').removeClass('active');
+        $.pjax({
+            url: '{% url "home" %}',
+            container: '#contents',
+            fragment: '#container',
+        })
+    });
+    $(document).on('click', 'a.music', function () {
+        is_music(this);
+        close_btn();
+        $('.music').addClass('active');
+        $('.blog').removeClass('active');
+        $('.home').removeClass('active');
+        $.pjax({
+            url: '{% url "song:music" %}',
+            container: '#contents',
+            fragment: '#container',
+        })
+    });
+    // 解决手机端菜单点开不关闭
+    function close_btn() {
+        $('button.navbar-toggle').addClass('collapsed').attr('aria-expanded', 'false');
+        $('#navbar-collapse').attr('aria-expanded', 'false').css('height', '1px').removeClass('in');
+    }
+    function is_music(ev){
+        let class_name = $(ev).attr('class');
+        if (class_name !== 'base music'){
+            $('div.result-list').css('display', 'None');
+        }else{
+           $('div.result-list').css('display', 'block');
+        }
+    }
+    function get_url(id) {
+        $.ajax({
+            url: '{% url "song:get_song_url" %}',
+            type: 'get',
+            data: {
+                'rid': id,
+            },
+            success: function (data) {
+                let info = data.info;
+                if(info.msg === 'success'){
+                    $('#audio').attr({'src':info.url, 'class': id});
+                    play_song();
+                    sb = 0;
+                }else{
+                    alert('有点错误发生了！');
+                }
+            }
+        })
+    }
 </script>
 </html>

@@ -1,6 +1,8 @@
 # -*- coding:utf-8 -*-
 import requests
 import json
+from uuid import uuid4
+import base64
 
 
 class Search(object):
@@ -8,18 +10,18 @@ class Search(object):
         "User-Agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0',
         'Host': 'www.kuwo.cn',
         'Connection': 'keep-alive',
-        'Cookie': 'kw_token=MTZQZ7M2J5D; Hm_lvt_cdb524f42f0ce19b169a8071123a4797=1594628502;'
-                  ' Hm_lpvt_cdb524f42f0ce19b169a8071123a4797=1594633393; '
-                  '_ga=GA1.2.2022098415.1594628503; _gid=GA1.2.152069903.1594628503; _gat=1',
+        'Cookie': 'Hm_lvt_cdb524f42f0ce19b169a8071123a4797=1612410008;'
+                  ' _ga=GA1.2.161966496.1604580196; Hm_lpvt_cdb524f42f0ce19b169a8071123a4797=1612410008; '
+                  'kw_token=D8U0ZU7D7FA; _gid=GA1.2.1214265788.1612410009; _gat=1',
         'Referer': 'http://www.kuwo.cn/search/list',
-        'CSRF': 'MTZQZ7M2J5D'
+        'CSRF': 'D8U0ZU7D7FA'
     }
 
     def get_rid(self, name, page):
-        url = 'http://www.kuwo.cn/api/www/search/searchMusicBykeyWord?key={}' \
-              '&pn={}&rn=100&httpsStatus=1&reqId=9a1ff3e0-c4ed-11ea-9548-17f87347f6a3'.format(name, page)
-        response = requests.get(url, headers=self.headers).content.decode()
-        info_list = json.loads(response)["data"]["list"]
+        url = f'https://www.kuwo.cn/api/www/search/searchMusicBykeyWord?key={name}&pn={page}' \
+              f'&rn=100&reqId={uuid4()}'
+        response = requests.get(url, headers=self.headers).json()
+        info_list = response["data"]["list"]
         return info_list
 
     def get_url(self, rid):
@@ -33,6 +35,12 @@ class Search(object):
         url = 'https://player.kuwo.cn/webmusic/st/getNewMuiseByRid?rid={}'.format(rid)
         response = requests.get(url).content.decode('utf-8')
         return response
+
+    def download_music(self, src, name):
+        song = requests.get(src).content
+        with open(name + '.mp3', 'wb') as f:
+            f.write(song)
+        return 'SUCCESS'
 
     def remove(self, file):
         response = requests.post(

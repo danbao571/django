@@ -42,16 +42,21 @@
     display: none;
 }
 .audioPlayer {
-    opacity: 1;
-    position: relative;
+    border-radius: 10px;
+    opacity: 0.8;
+    width: 80%;
+    position: fixed;
+    left: 10%;
     height: 60px;
-    bottom: 0;
+    bottom: -50px;
     z-index: 2;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
     padding-top: 18px;
     padding-left: 20px;
     background-color: #c94848;
+    transition: 0.5s linear;
+}
+.audioPlayer:hover{
+    bottom: 0px;
 }
 .totalProgress {
     cursor: pointer;

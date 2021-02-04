@@ -88,82 +88,47 @@ var timer = setInterval(function () {
     }
 },100)
 // 获取搜索结果
-$('.yuan-right').click(function () {
-    $.ajax({
-        url: 'search_song',
-        type: 'get',
-        data: {
-            'word': $('.yuan-left').val(),
-        },
-        success: function (data) {
-            // var nick_name = $('#nick-name').text();
-            // if(nick_name===''){
-            //     alert('请先登陆');
-            // }else{
-            if(data.status === "SUCCESS"){
-                $(".result").empty();
-                if($('.result-list').hide()){
-                    $('.glyphicon-eye-open').click();
-                }
-                let total = data.info.length;
-                for (var i=0;i<total;i++) {
-                    let id = data.info[i].rid;
-                    let time = data.info[i].songTimeMinutes;
-                    let name = data.info[i].name;
-                    let artist = data.info[i].artist;
-                    $('.result').append('<tr class="rid" style="cursor: pointer;"><th class="num"></th><td class="name"></td><td class="artist" style="max-width: 500px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;"></td></tr>');
-                    $('.name').last().attr({'id': id, 'time': time}).html(name);
-                    $('.num').last().html(i + 1);
-                    $('.artist').last().html(artist + '<button onclick="clean(this)" type="button" class="close" aria-label="Close" style="color: #e8e6e5; opacity: 1; font-size: 15px; padding-right: 18px" ><span aria-hidden="true">&times;</span></button>');
-                    document.getElementById(id).addEventListener("click", function () {
-                        $('.song-name').text(name + ' -- ' + artist);
-                        totalTime.text(time);
-                        get_url(id);
-                    });
-                }
-                }else {
-                    $('.yuan-left').attr('placeholder','搜索内容不能为空！！');
-                }
+// $('.yuan-right').click(function () {
+//     $.ajax({
+//         url: 'song:search_song',
+//         type: 'get',
+//         data: {
+//             'word': $('.yuan-left').val(),
+//         },
+//         success: function (data) {
+//             // var nick_name = $('#nick-name').text();
+//             // if(nick_name===''){
+//             //     alert('请先登陆');
+//             // }else{
+//             if(data.status === "SUCCESS"){
+//                 $(".result").empty();
+//                 if($('.result-list').hide()){
+//                     $('.glyphicon-eye-open').click();
+//                 }
+//                 let total = data.info.length;
+//                 for (var i=0;i<total;i++) {
+//                     let id = data.info[i].rid;
+//                     let time = data.info[i].songTimeMinutes;
+//                     let name = data.info[i].name;
+//                     let artist = data.info[i].artist;
+//                     $('.result').append('<tr class="rid" style="cursor: pointer;"><th class="num"></th><td class="name"></td><td class="artist" style="max-width: 500px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;"></td></tr>');
+//                     $('.name').last().attr({'id': id, 'time': time}).html(name);
+//                     $('.num').last().html(i + 1);
+//                     $('.artist').last().html(artist + '<button onclick="clean(this)" type="button" class="close" aria-label="Close" style="color: #e8e6e5; opacity: 1; font-size: 15px; padding-right: 18px" ><span aria-hidden="true">&times;</span></button>');
+//                     document.getElementById(id).addEventListener("click", function () {
+//                         $('.song-name').text(name + ' -- ' + artist);
+//                         totalTime.text(time);
+//                         get_url(id);
+//                     });
+//                 }
+//                 }else {
+//                     $('.yuan-left').attr('placeholder','搜索内容不能为空！！');
+//                 }
+//
+//         }
+//     })
+// })
 
-        }
-    })
-})
-// 获取歌曲播放链接
-function get_url(id) {
-    $.ajax({
-        url: 'get_song_url',
-        type: 'get',
-        data: {
-            'rid': id,
-        },
-        success: function (data) {
-            let info = data.info;
-            if(info.msg === 'success'){
-                $('#audio').attr({'src':info.url, 'class': id});
-                play_song();
-                sb = 0;
-            }else{
-                alert('有点错误发生了！');
-            }
-        }
-    })
-}
-// 清空搜索列表
-$('.glyphicon-trash').click(function () {
-    $(".result").empty();
-})
-// 收起音乐列表
-$('.glyphicon-eye-close').click(function () {
-    $('.result-list').hide();
-    $(this).hide();
-    $('.glyphicon-eye-open').show();
-})
-// 展开音乐列表
-$('.glyphicon-eye-open').click(function () {
-    $('.result-list').show();
-    $(this).hide();
-    $('.glyphicon-eye-close').show();
-})
 // 清空单条搜索结果
 function clean(doc){
     var tr = $(doc).parents('tr');
@@ -175,7 +140,7 @@ function clean(doc){
     }
 }
 // 上一首
-$('.glyphicon-step-backward').click(function () {
+function last_song(){
     var rid = $('audio').attr('class');
     var id = $("[id="+ rid + "]").parent().prev().children("td.name").attr('id');
     var hh = typeof id;
@@ -191,9 +156,12 @@ $('.glyphicon-step-backward').click(function () {
         totalTime.text(time);
         get_url(id);
     }
+}
+$('.glyphicon-step-backward').click(function () {
+   last_song();
 })
 // 下一首
-$('.glyphicon-step-forward').click(function () {
+function next_song(){
     var rid = $('audio').attr('class');
     var id = $("[id="+ rid + "]").parent().next().children("td.name").attr('id');
     if(typeof id === 'undefined'){
@@ -208,18 +176,21 @@ $('.glyphicon-step-forward').click(function () {
         totalTime.text(time);
         get_url(id);
     }
+}
+$('.glyphicon-step-forward').click(function () {
+    next_song();
 })
 function hiddenMsg() {
     $('.tip').text('');
 }
 // 点击图片播放/暂停背景声音
-$('video').click(function () {
-     if($(this).prop('muted')) {
-        $("video").prop('muted', false);
-    } else {
-        $("video").prop('muted', true);
-    }
-})
+// $('video').click(function () {
+//      if($(this).prop('muted')) {
+//         $("video").prop('muted', false);
+//     } else {
+//         $("video").prop('muted', true);
+//     }
+// })
 // 绑定键盘事件
 $(document).keydown(function(event){
     // enter键
