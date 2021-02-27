@@ -10,7 +10,7 @@
             <pre id="home">ConnectionAbortedError: [WinError 10053] 你的主机中的软件中止了一个已建立的连接。
                 <pre>...</pre>
 
-            <p><span id="login" class="btn btn-primary btn-lg" role="button">点我！</span></p></pre>
+            <p><span id="login" class="btn btn-primary btn-lg" role="button"><a href="music/remove_bg">点我！</a></span></p></pre>
             {% else %}
             <div class="img" style="margin-top: 50px">
                 <img style="opacity: 0.1" src="/static/img/beijing1.png" alt="背景图" class="lyj img-responsive">
@@ -20,6 +20,7 @@
             <form id="infoLogoForm" style="padding-top: 50px;">
                 <input type="file" name="photo" id="photo" value="" placeholder="免冠照片">
                 <input type="button" onclick="postData();" value="去除背景" name="" style="width:100px;height:30px;">
+                <p onclick="downTu()" style="cursor: pointer">下载图片</p>
             </form>
             <img id="show" src="">
             <h1 style="text-align: center; color: white; margin: 80px 0">!!!</h1>
@@ -38,10 +39,19 @@
         </div>
     </div>
         <script type="text/javascript">
+            function downTu() {
+                let url = $('#show').attr('src');
+                let name = url.split('/')[-1];
+                const a = document.createElement('a'); // 创建a标签
+                a.setAttribute('download', name);// download属性
+                a.setAttribute('href', url);// href链接
+                a.setAttribute('target', '_brank');// href链接
+                a.click();// 自执行点击事件
+            }
             function postData(){
-                var form = document.getElementById("infoLogoForm");
-                var formData = new FormData(form);
-                var pu = formData.get('photo');
+                let form = document.getElementById("infoLogoForm");
+                let formData = new FormData(form);
+                let pu = formData.get('photo');
                 console.log(pu);
                 $.ajax({
                     url:'{% url "song:remove_bg" %}',
@@ -59,6 +69,7 @@
                     }
                 })
             }
+
         </script>
 </div>
 {% endblock %}
