@@ -19,7 +19,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from rest_framework.routers import DefaultRouter
 from show.views import NewsListViewSet
-from .views import home
+from .views import HomeView
 router = DefaultRouter()
 # 配置goods的url
 router.register(r'news', NewsListViewSet)
@@ -29,7 +29,7 @@ goods_list = NewsListViewSet.as_view({
 })
 
 urlpatterns = [
-    path('', home, name='home'),
+    path('', HomeView.as_view(), name='home'),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('page_list/', include('show.urls')),

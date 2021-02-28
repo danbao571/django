@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 AUTH_USER_MODEL = 'user.UserProfile'
@@ -43,15 +44,18 @@ INSTALLED_APPS = [
     'user',
     'ckeditor',
     'ckeditor_uploader',
+    'corsheaders',
     'song',
     'blog',
+    'comment',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -83,36 +87,35 @@ WSGI_APPLICATION = 'info_site.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-#DATABASES = {
-#   'default': {
-#     'ENGINE': 'djongo',
-#      'ENFORCE_SCHEMA': True,
-#      'NAME': 'lyj',
-#      'CLIENT': {
-#         'host': '192.168.188.14',
-#         'port': 27019,
-#         'username': 'root',
-#         'password': 'data123123',
-#         'authSource': 'admin',
-#         'authMechanism': 'SCRAM-SHA-1'
-#      }
-#  }
-#}
+# DATABASES = {
+#    'default': {
+#       'ENGINE': 'djongo',
+#       'ENFORCE_SCHEMA': True,
+#       'NAME': 'lyj',
+#       'CLIENT': {
+#          'host': '192.168.188.14',
+#          'port': 27019,
+#          'username': 'root',
+#          'password': 'data123123',
+#          'authSource': 'admin',
+#          'authMechanism': 'SCRAM-SHA-1'
+#       }
+#    }
+# }
 DATABASES = {
-    'default': {
-       'ENGINE': 'djongo',
-       'ENFORCE_SCHEMA': True,
-       'NAME': 'lyj_site',
-       'CLIENT': {
-          'host': '47.107.50.252',
-          'port': 27017,
-          'username': 'root',
-          'password': 'mima',
-          'authSource': 'admin',
-          'authMechanism': 'SCRAM-SHA-1'
-       }
-    }
- }
+   'default': {
+      'ENGINE': 'djongo',
+      'ENFORCE_SCHEMA': True,
+      'NAME': 'lyj_site',
+      'CLIENT': {
+         'host': '47.107.50.252',
+         'port': 27017,
+         'username': 'root',
+         'password': '123456',
+         'authSource': 'admin',
+         'authMechanism': 'SCRAM-SHA-1'
+      }
+   }}
 
 # from mongoengine import connect
 # connect(host='mongodb://root:data123123@192.168.188.14:27019/lyj?authSource=admin&authMechanism=SCRAM-SHA-1')
@@ -159,6 +162,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 # 静态文件配置
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
@@ -203,3 +207,30 @@ CACHES = {
         'LOCATION': 'my_cache_table',
     }
 }
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = ()
+
+CORS_ALLOW_METHODS = (
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+    'VIEW',
+)
+
+CORS_ALLOW_HEADERS = (
+    'XMLHttpRequest',
+    'X_FILENAME',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'Pragma',
+)

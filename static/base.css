@@ -25,6 +25,7 @@ a.base:hover {
     color: #eae8e8 !important;
 }
 a.base {
+    cursor: pointer;
     color: #c9c3c3!important;
     z-index: 1008;
 }

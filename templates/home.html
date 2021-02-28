@@ -3,57 +3,73 @@
 {% block title %}我的网站|首页{% endblock %}
 {% block nav_home_active %}active{% endblock %}
 {% block content %}
-<div class="jumbotron">
-    <div class="container background-jpg" style="padding-top: 30px">
-        {% if not user.is_authenticated %}
-        <pre id="home">ConnectionAbortedError: [WinError 10053] 你的主机中的软件中止了一个已建立的连接。
-            <pre>...</pre>
+<div id="container">
+    <div class="jumbotron">
+        <div class="container background-jpg" style="padding-top: 30px">
+            {% if not user.is_authenticated %}
+            <pre id="home">ConnectionAbortedError: [WinError 10053] 你的主机中的软件中止了一个已建立的连接。
+                <pre>...</pre>
 
-        <p><span id="login" class="btn btn-primary btn-lg" role="button">点我！</span></p></pre>
-        {% else %}
-        <div class="img" style="margin-top: 50px">
-            <img style="opacity: 0.1" src="/static/img/beijing1.png" alt="背景图" class="lyj img-responsive">
-            <img src="/static/img/timg.gif" alt="背景图" class="beijing img-responsive">
-        </div>
-        {% endif %}
-        <form id="infoLogoForm">
-            <input type="file" name="photo" id="photo" value="" placeholder="免冠照片">
-            <input type="button" onclick="postData();" value="去除背景" name="" style="width:100px;height:30px;">
-        </form>
-        <img id="show" src="" alt="show">
-        <h1 style="text-align: center; color: white; margin: 80px 0">Welcome To My Site!</h1>
-        <div class="login col-lg-4 col-lg-offset-4">
-            <div class="login-form">
-                <input type="text" class="input-text" id="username" name="username" placeholder="手机号/电子邮箱">
+            <p><span id="login" class="btn btn-primary btn-lg" role="button"><a href="music/remove_bg">点我！</a></span></p></pre>
+            {% else %}
+            <div class="img" style="margin-top: 50px">
+                <img style="opacity: 0.1" src="/static/img/beijing1.png" alt="背景图" class="lyj img-responsive">
+                <img src="/static/img/timg.gif" alt="背景图" class="beijing img-responsive">
             </div>
-            <div class="login-form">
-                <input type="password" class="input-text" id="password" name="password" placeholder="密码">
+            {% endif %}
+            <form id="infoLogoForm" style="padding-top: 50px;">
+                <input type="file" name="photo" id="photo" value="" placeholder="免冠照片">
+                <input type="button" onclick="postData();" value="去除背景" name="" style="width:100px;height:30px;">
+                <p onclick="downTu()" style="cursor: pointer">下载图片</p>
+            </form>
+            <img id="show" src="">
+            <h1 style="text-align: center; color: white; margin: 80px 0">!!!</h1>
+            <div class="login col-lg-4 col-lg-offset-4">
+                <div class="login-form">
+                    <input type="text" class="input-text" id="username" name="username" placeholder="手机号/电子邮箱">
+                </div>
+                <div class="login-form">
+                    <input type="password" class="input-text" id="password" name="password" placeholder="密码">
+                </div>
+                <button id="submit_1" type="submit" class="btn btn-form-common form-control">
+                    <span>登陆</span>
+                </button>
+                <span id="login_medal_tip" class="text-danger"></span>
             </div>
-            <button id="submit_1" type="submit" class="btn btn-form-common form-control">
-                <span>登陆</span>
-            </button>
-            <span id="login_medal_tip" class="text-danger"></span>
         </div>
     </div>
-</div>
-    <script type="text/javascript">
-        function postData(){
-            var form = document.getElementById("infoLogoForm");
-            var formData = new FormData(form);
-            var pu = formData.get('photo');
-            console.log(pu);
-            $.ajax({
-                url:'{% url 'remove_bg' %}',
-                type:'post',
-                data: formData,
-                dataType: 'json',
-                processData: false, // 告诉jQuery不要去处理发送的数据
-                contentType: false, // 告诉jQuery不要去设置Content-Type请求头
-                success:function(data){
-                    $('#show').attr('src', data.img);
+        <script type="text/javascript">
+            function downTu() {
+                let url = $('#show').attr('src');
+                let name = url.split('/')[-1];
+                const a = document.createElement('a'); // 创建a标签
+                a.setAttribute('download', name);// download属性
+                a.setAttribute('href', url);// href链接
+                a.setAttribute('target', '_brank');// href链接
+                a.click();// 自执行点击事件
+            }
+            function postData(){
+                let form = document.getElementById("infoLogoForm");
+                let formData = new FormData(form);
+                let pu = formData.get('photo');
+                console.log(pu);
+                $.ajax({
+                    url:'{% url "song:remove_bg" %}',
+                    type:'post',
+                    data: formData,
+                    dataType: 'json',
+                    processData: false, // 告诉jQuery不要去处理发送的数据
+                    contentType: false, // 告诉jQuery不要去设置Content-Type请求头
+                    success:function(data){
+                        if (data.img === undefined){
+                            alert(data.msg);
+                        }else{
+                            $('#show').attr('src', data.img);
+                        }
+                    }
+                })
+            }
 
-                }
-            })
-        }
-    </script>
+        </script>
+</div>
 {% endblock %}
