@@ -87,36 +87,36 @@ WSGI_APPLICATION = 'info_site.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-   'default': {
-      'ENGINE': 'djongo',
-      'ENFORCE_SCHEMA': True,
-      'NAME': 'lyj',
-      'CLIENT': {
-         'host': '192.168.188.14',
-         'port': 27019,
-         'username': 'root',
-         'password': 'data123123',
-         'authSource': 'admin',
-         'authMechanism': 'SCRAM-SHA-1'
-      }
-   }
-}
 # DATABASES = {
 #    'default': {
 #       'ENGINE': 'djongo',
 #       'ENFORCE_SCHEMA': True,
-#       'NAME': 'lyj_site',
+#       'NAME': 'lyj',
 #       'CLIENT': {
-#          'host': '47.107.50.252',
-#          'port': 27017,
+#          'host': '192.168.188.14',
+#          'port': 27019,
 #          'username': 'root',
-#          'password': 'mima',
+#          'password': 'data123123',
 #          'authSource': 'admin',
 #          'authMechanism': 'SCRAM-SHA-1'
 #       }
 #    }
 # }
+DATABASES = {
+   'default': {
+      'ENGINE': 'djongo',
+      'ENFORCE_SCHEMA': True,
+      'NAME': 'lyj_site',
+      'CLIENT': {
+         'host': '47.107.50.252',
+         'port': 27017,
+         'username': 'root',
+         'password': '123456',
+         'authSource': 'admin',
+         'authMechanism': 'SCRAM-SHA-1'
+      }
+   }
+}
 
 # from mongoengine import connect
 # connect(host='mongodb://root:data123123@192.168.188.14:27019/lyj?authSource=admin&authMechanism=SCRAM-SHA-1')
@@ -163,6 +163,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 # 静态文件配置
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
