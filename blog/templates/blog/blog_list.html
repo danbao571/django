@@ -38,14 +38,14 @@
                                    <div class="content" style="position: relative; padding: 0 0 10px 0; border-bottom: 2px solid #708090; ">
                                        <div class="content-blog">
                                            <div class="title" style="font-size: 20px; padding: 10px;">
-                                               <a href="{% url 'blog:blog_detail' blog.pk %}">{{ blog.title|truncatechars_html:15 }}</a>
+                                               <a href="{% url 'blog:blog_detail' blog.pk %}">{{ blog.title|truncatechars_html:50 }}</a>
                                            </div>
                                            <div class="author" style="position: absolute;right: 0;top:4px;text-align: center;padding: 10px;">
                                                <p>by：{{ blog.author }}</p>
                                            </div>
                                        </div>
                                        <nav class="content">
-                                           {% autoescape off %}{{ blog.content|truncatechars_html:30 }}{% endautoescape %}
+                                           {% autoescape off %}{{ blog.content|truncatechars_html:40 }}{% endautoescape %}
                                        </nav>
                                    </div>
                                    {% empty %}
