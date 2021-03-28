@@ -1,9 +1,11 @@
 *{
-    font-family: 新宋体;
     margin: 0;
     padding: 0;
     width:auto;
     height:auto;
+}
+a:hover{
+    text-decoration:none !important;
 }
 ul {
 	list-style-type: none;

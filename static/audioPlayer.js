@@ -7,9 +7,9 @@ var sb = 0;
 
 window.onload = function(){
     totalTime.text(formatTime(audio.duration));
-    $('.play').css({'display':'none'});
-    $('.pause').css({'display':'inline-block'});
-}
+    $('.play').css({'display':'inline-block'});
+    $('.pause').css({'display':'none'});
+};
 // 播放暂停切换
 function play_song() {
     if(audio.paused){
@@ -86,7 +86,7 @@ var timer = setInterval(function () {
         var ratio = audio.currentTime / audio.duration;
         currentProgress.css({'width':ratio*100+'%'});
     }
-},100)
+},100);
 // 获取搜索结果
 // $('.yuan-right').click(function () {
 //     $.ajax({
@@ -159,7 +159,7 @@ function last_song(){
 }
 $('.glyphicon-step-backward').click(function () {
    last_song();
-})
+});
 // 下一首
 function next_song(){
     var rid = $('audio').attr('class');
@@ -179,7 +179,7 @@ function next_song(){
 }
 $('.glyphicon-step-forward').click(function () {
     next_song();
-})
+});
 function hiddenMsg() {
     $('.tip').text('');
 }
